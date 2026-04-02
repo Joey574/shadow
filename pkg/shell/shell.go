@@ -111,10 +111,12 @@ func (s *ShellObfs) B64Encode(src Script) Script {
 	size := (len(cmd) + stride - 1) / stride
 
 	keys := make([]string, size)
+ names := make([]string, size)
 	values := make([]string, 0, size)
 
 	for i := range keys {
 		keys[i] = varName(i)
+  names[i] = keys[i]
 	}
 
 	// prevent predictable ordering of output variables
@@ -127,8 +129,6 @@ func (s *ShellObfs) B64Encode(src Script) Script {
 	}
 
 	// randomize order in which variables are declared
-	names := make([]string, len(keys))
-	copy(names, keys)
 	crypto.ShuffleWith(names, values)
 
 	var compiled strings.Builder
